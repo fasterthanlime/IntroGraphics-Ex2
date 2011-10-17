@@ -1,1 +1,5 @@
 *.[oa]
+*.suo
+Framework/Release
+*.ncb
+*.vcproj.*

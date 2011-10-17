@@ -34,6 +34,8 @@ bool Plane::intersect(const Ray &ray, IntersectionData* iData) {
     iData->position=ray.getPointOnRay(iData->t);
 
     //===EXERCISE 2.1.1 ===
+    iData->normal = m_normal;
+    iData->material = m_material;
 
     return true;
   }

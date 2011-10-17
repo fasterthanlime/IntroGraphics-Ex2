@@ -48,7 +48,7 @@ bool Triangle::intersect(const Ray &ray, IntersectionData* iData) {
   /* Solution from Moeller and Trumbore: Fast, minimum storage ray-triangle intersection 
   http://www.graphics.cornell.edu/pubs/1997/MT97.html */
 
-  double EPSILON = 10e-10;
+  const double EPSILON = 10e-10;
   double u,v;
   Vector3 qvec;
 
@@ -118,6 +118,40 @@ bool Triangle::intersect(const Ray &ray, IntersectionData* iData) {
     iData->position=ray.getPointOnRay(iData->t);
 
     //===EXERCISE 2.1.1 ===
+    // Compute barycentric coordinates
+
+    // Compute the normal of this triangle
+    Vector3 n = (m_p2 - m_p1).cross(m_p3 - m_p1);
+
+    // Now we compute the point on the triangle, and convert it to
+    // the triangle's plane coordinates
+    Vector3 p = ray.getPointOnRay(t);
+
+    Vector3 e1 = (m_p2 - m_p1).normalize();
+    Vector3 e2 = n.cross(e1).normalize();
+
+    double x1 = m_p1.dot(e1);
+    double y1 = m_p1.dot(e2);
+
+    double x2 = m_p2.dot(e1);
+    double y2 = m_p2.dot(e2);
+
+    double x3 = m_p3.dot(e1);
+    double y3 = m_p3.dot(e2);
+
+    double xp = p.dot(e1);
+    double yp = p.dot(e2);
+
+    // now we compute the barycentric coordinates of p
+    double det = (y2 - y3)*(x1 - x3) + (x3 - x2)*(y1 - y3);
+    double s1 = ((y2 - y3)*(xp - x3) + (x3 - x2)*(yp - y3)) / det;
+    double s2 = ((y3 - y1)*(xp - x3) + (x1 - x3)*(yp - y3)) / det;
+    double s3 = 1 - s1 - s2;
+
+    // now compute the normal as the weighted sum of the three normals
+    iData->normal = m_n1 * s1 + m_n2 * s2 + m_n3 * s3;
+
+    iData->material = m_material;
 
     return true;
   }

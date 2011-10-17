@@ -219,7 +219,7 @@ int main(int argc, char *argv[]) {
 
 	// Init Scene
 	if (argc <= 1) {
-		sceneDescription = "sceneDescriptions/SceneDescription.xml";
+		sceneDescription = "sceneDescriptions/SceneDescription_ex2.xml";
 	}
 	else {
 		sceneDescription = argv[1];
