@@ -38,27 +38,44 @@ Vector4 PhongLightingShader::shade(IntersectionData* iData, Scene* scene) {
   //===EXERCISE 2.1.3 ===
   Vector4 color_tmp(0,0,0);
 
+  Vector4 Ka = iData->material->ambient;
+  Vector4 Kd = iData->material->diffuse;
+  Vector4 Ks = iData->material->specular;
   Vector3 N = iData->normal;
+  
+  Vector4 Ia = scene->getAmbient();
 
-  color_tmp += scene->getAmbient().componentMul(iData->material->ambient);
+  // Ambient contribution formula
+  // I = IaKa
+  color_tmp += Ia.componentMul(Ka);
 
-  for(unsigned int i = 0; i < scene->getLights().size(); i++) {
-    ILight *light = scene->getLights().at(i);
+  std::vector<ILight*> lights = scene->getLights();
+  for(unsigned int i = 0; i < lights.size(); i++) {
+    ILight *light = lights[i];
 
+    Vector4 Ip = light->getColor();
     Vector3 L = (light->getPosition() - iData->position).normalize();
     double NdotL = N.dot(L);
+
+    // Only apply diffuse contribution if N and L are pointing in the same direction
     if(NdotL >= 0.0) {
-      color_tmp += light->getColor().componentMul(iData->material->diffuse) * NdotL;
+      // Formula to compute diffuse lighting contribution:
+      // I = IpKd(N dot L)
+      color_tmp += Ip.componentMul(Kd) * NdotL;
 
       Vector3 V = (iData->sourcePosition - iData->position).normalize();
-
-      Vector3 Lparallel = N * NdotL;
-      Vector3 R = ((Lparallel * 2) - L).normalize();
+      Vector3 R = ((N * NdotL * 2) - L).normalize();
       
       double VdotR = V.dot(R);
       double n = iData->material->shininess;
+
+      // Only apply specular contribution if N and L are pointing
+      // in the same direction and if V and R are pointing in
+      // the same direction
       if(VdotR >= 0.0) {
-        color_tmp += light->getColor().componentMul(iData->material->specular) * pow(VdotR, n);
+        // Formula to compute diffuse lighting contribution:
+        // I = IpKs(V dot R)^n
+        color_tmp += Ip.componentMul(Ks) * pow(VdotR, n);
       }
     }
   }

@@ -28,18 +28,26 @@ Vector4 DiffuseLightingShader::shade(IntersectionData* iData, Scene * scene) {
   //=== EXERCISE 2.1.2 ===
   Vector4 color_tmp(0,0,0);
 
+  Vector4 Kd = iData->material->diffuse;
   Vector3 N = iData->normal;
 
-  for(unsigned int i = 0; i < scene->getLights().size(); i++) {
-    ILight *light = scene->getLights().at(i);
+  std::vector<ILight*> lights = scene->getLights();
+  for(unsigned int i = 0; i < lights.size(); i++) {
+    ILight *light = lights[i];
+
+    Vector4 Ip = light->getColor();
     Vector3 L = (light->getPosition() - iData->position).normalize();
-    double dot = N.dot(L);
-    if(dot >= 0.0) {
-      color_tmp += light->getColor().componentMul(iData->material->diffuse) * dot;
+
+    double NdotL = N.dot(L);
+    // Only apply diffuse contribution if N and L are not pointing in opposite directions
+    if(NdotL >= 0.0) {
+      // Formula to compute diffuse lighting contribution:
+      // I = IpKd(N dot L)
+      color_tmp += Ip.componentMul(Kd) * NdotL;
     }
   }
-
-	return color_tmp.clamp01();
+	
+  return color_tmp.clamp01();
 }
 
 
