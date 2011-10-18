@@ -93,11 +93,7 @@ IntersectionData* Scene::intersect(const Ray &ray) const {
 			std::list<IElement*>::const_iterator element;
 			for (element = m_elementList.begin(); element != m_elementList.end(); element++) {
         if ((*element)->intersect(ray,iData)) {
-          // test if the intersection is between the source of the ray and the considered point
-          double t = iData->position.dot(ray.direction);
-          if(ray.min_t < t && t < ray.max_t) {
-            intersected = true;
-          }
+          intersected = true;
         }
 			}
 		}
@@ -122,8 +118,11 @@ bool Scene::fastIntersect(const Ray &ray) const {
 		std::list<IElement*>::const_iterator element;
 		for (element = m_elementList.begin(); element != m_elementList.end(); element++) {
 			if ((*element)->intersect(ray,iData)) {
-				// intersection found
-				return true;
+        // test if the intersection is between the source of the ray and the considered point
+        double t = (iData->position - ray.point).dot(ray.direction);
+        if(ray.min_t < t && t < ray.max_t) {
+          return true;
+        }
 			}
 		}
 	}
