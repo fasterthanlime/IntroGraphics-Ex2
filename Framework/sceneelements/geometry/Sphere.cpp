@@ -58,6 +58,7 @@ bool Sphere::intersect(const Ray &ray, IntersectionData* iData) {
       iData->position=ray.getPointOnRay(iData->t);
       iData->color=getColor();
       iData->material=getMaterial();
+      iData->reflectionPercentage = m_reflectionPercentage;
       iData->sourcePosition=ray.point;
       iData->normal=(ray.getPointOnRay(iData->t) - m_center).normalize();
 
