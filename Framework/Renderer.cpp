@@ -92,8 +92,6 @@ double Renderer::status() {
 //trace the ray and find out the color at its intersection point with the scene
 Vector4 Renderer::traceColor(Ray ray, Scene* scene, unsigned int recDepth) {
 
-
-
 	Vector4 color(0,0,0);
 	IntersectionData* iData = scene->intersect(ray);
 	double reflectionPercentage;
@@ -102,7 +100,6 @@ Vector4 Renderer::traceColor(Ray ray, Scene* scene, unsigned int recDepth) {
 		//=== EXERCISE 2.2.3 ===
 		reflectionPercentage = iData->reflectionPercentage;
 		color = m_shader->shade(iData, scene);
-		color = color * (1.0 - reflectionPercentage);
 		
     Vector3 N = iData->normal;
 		Vector3 L = -ray.direction;
@@ -111,7 +108,7 @@ Vector4 Renderer::traceColor(Ray ray, Scene* scene, unsigned int recDepth) {
 		if (recDepth < m_recursionDepth) {
 				Ray reflected = Ray(iData->position, R);
 				reflected.min_t = reflected.epsilon_t;
-				color += traceColor(reflected, scene, recDepth + 1) * reflectionPercentage;                  
+				color = color * (1.0 - reflectionPercentage) + traceColor(reflected, scene, recDepth + 1) * reflectionPercentage;                  
 		}
   } else {
 	  color = scene->getBackground(); // background color
