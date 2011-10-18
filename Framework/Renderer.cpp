@@ -100,7 +100,8 @@ Vector4 Renderer::traceColor(Ray ray, Scene* scene, unsigned int recDepth) {
 		reflectionPercentage = iData->reflectionPercentage;
 		color = m_shader->shade(iData, scene);
 		
-    Vector3 N = iData->normal;
+
+		Vector3 N = iData->normal;
 		Vector3 L = -ray.direction;
 		Vector3 R = ((N * N.dot(L) * 2.0) - L).normalize();	
 			 
@@ -108,6 +109,7 @@ Vector4 Renderer::traceColor(Ray ray, Scene* scene, unsigned int recDepth) {
 				Ray reflected = Ray(iData->position, R);
 				reflected.min_t = reflected.epsilon_t;
 				color = color * (1.0 - reflectionPercentage) + traceColor(reflected, scene, recDepth + 1) * reflectionPercentage;                  
+
 		}
   } else {
 	  color = scene->getBackground(); // background color
