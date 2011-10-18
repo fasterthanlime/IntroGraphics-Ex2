@@ -96,7 +96,6 @@ Vector4 Renderer::traceColor(Ray ray, Scene* scene, unsigned int recDepth) {
 	IntersectionData* iData = scene->intersect(ray);
 	double reflectionPercentage;
 	if (iData) { // sucessful intersection test
-
 		//=== EXERCISE 2.2.3 ===
 		reflectionPercentage = iData->reflectionPercentage;
 		color = m_shader->shade(iData, scene);
