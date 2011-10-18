@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Exercise 1 - Introduction to computer graphics</title>
+    <title>Exercise 2 - Introduction to computer graphics</title>
     <style>
         body {
             background-color: #101010;
@@ -40,7 +40,7 @@
 <body>
 <h1>Introduction to computer graphics</h1>
 <p>
-Unfortunately I am alone to do these exercises &mdash; Amos Wenger
+by Javier Martín de Valmaseda and Amos Wenger
 </p>
 <h2>2.1 Shading</h2> 
 
@@ -72,12 +72,18 @@ Apart from that, nothing too hard. Didn't use the course's formula to compute R,
 
 <h3>2.2.1 Shadows</h3>
 <p>
+Implementing the getNonOccludedLights required to cast rays from the light source's position and the given points - if there is an intersection then it's occluded, otherwise it's non-occluded.
 </p>
 
 <p class='center'><img src="images/shadows.png"></p>
 
+<p>
+Verifying that the intersection is between the light source and the occluded point is as simple as checking that t = intersectionPos dot rayNormal is bigger than ray's min_t and smaller than ray's max_t.
+</p>
+
 <h3>2.2.2 Additional Intersection Information for Recursion</h3>
 <p>
+Assigning m_reflectionPercentage to iData was enough.
 </p>
 
 <h3>2.2.3 Reflection</h3>
