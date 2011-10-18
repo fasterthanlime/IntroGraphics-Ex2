@@ -49,7 +49,7 @@ Vector4 PhongLightingShader::shade(IntersectionData* iData, Scene* scene) {
   // I = IaKa
   color_tmp += Ia.componentMul(Ka);
 
-  std::vector<ILight*> lights = scene->getLights();
+  std::vector<ILight*> lights = scene->getNonOccludedLights(iData->position);
   for(unsigned int i = 0; i < lights.size(); i++) {
     ILight *light = lights[i];
 
