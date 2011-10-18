@@ -152,6 +152,7 @@ bool Triangle::intersect(const Ray &ray, IntersectionData* iData) {
     iData->normal = m_n1 * s1 + m_n2 * s2 + m_n3 * s3;
 
     iData->material = m_material;
+    iData->reflectionPercentage = m_reflectionPercentage;
 
     return true;
   }

@@ -194,6 +194,7 @@ bool MeshTriangle::intersect(const Ray &ray, IntersectionData* iData) {
     iData->color=getColor();
     iData->t=t;
     iData->material=getMaterial();
+    iData->reflectionPercentage = m_reflectionPercentage;
     iData->sourcePosition=ray.point;
     iData->normal=(m_n1*(1.0-u-w) + m_n2*u + m_n3*w).normalize();
     iData->position=ray.getPointOnRay(iData->t);

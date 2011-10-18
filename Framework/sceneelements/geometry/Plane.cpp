@@ -36,6 +36,7 @@ bool Plane::intersect(const Ray &ray, IntersectionData* iData) {
     //===EXERCISE 2.1.1 ===
     iData->normal = m_normal;
     iData->material = m_material;
+    iData->reflectionPercentage = m_reflectionPercentage;
 
     return true;
   }
