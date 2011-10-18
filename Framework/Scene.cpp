@@ -92,7 +92,13 @@ IntersectionData* Scene::intersect(const Ray &ray) const {
 		if (m_elementList.size() > 0) {
 			std::list<IElement*>::const_iterator element;
 			for (element = m_elementList.begin(); element != m_elementList.end(); element++) {
-				if ((*element)->intersect(ray,iData)) intersected = true;
+        if ((*element)->intersect(ray,iData)) {
+          // test if the intersection is between the source of the ray and the considered point
+          double t = iData->position.dot(ray.direction);
+          if(ray.min_t < t && t < ray.max_t) {
+            intersected = true;
+          }
+        }
 			}
 		}
 
@@ -133,6 +139,19 @@ std::vector<ILight*> Scene::getNonOccludedLights(const Vector3 &point) const{
   std::vector<ILight*> nonOccludedLights;
 
   //===EXERCISE 2.2.1 ===
+  
+  std::vector<ILight*> lightList = getLights();
+	Ray r;
+	unsigned int i;
+	for (i=0; i< lightList.size(); i++)
+	{
+		r=lightList[i]->generateRay(point);
+		if(!fastIntersect(r))
+		{
+			nonOccludedLights.push_back(lightList[i]);
+		}
+
+	}
 
 	return nonOccludedLights;
 }

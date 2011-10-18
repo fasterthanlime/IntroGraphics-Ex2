@@ -31,7 +31,7 @@ Vector4 DiffuseLightingShader::shade(IntersectionData* iData, Scene * scene) {
   Vector4 Kd = iData->material->diffuse;
   Vector3 N = iData->normal;
 
-  std::vector<ILight*> lights = scene->getLights();
+  std::vector<ILight*> lights = scene->getNonOccludedLights(iData->position);
   for(unsigned int i = 0; i < lights.size(); i++) {
     ILight *light = lights[i];
 
