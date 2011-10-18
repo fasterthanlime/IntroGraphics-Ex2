@@ -100,32 +100,22 @@ Vector4 Renderer::traceColor(Ray ray, Scene* scene, unsigned int recDepth) {
 	if (iData) { // sucessful intersection test
 
 		//=== EXERCISE 2.2.3 ===
-		reflectionPercentage=iData->reflectionPercentage;
+		reflectionPercentage = iData->reflectionPercentage;
 		color = m_shader->shade(iData, scene);
-		color = color * (1-reflectionPercentage);
+		color = color * (1.0 - reflectionPercentage);
 		
-        Vector3 N = iData->normal;
-		Vector3 L = ray.direction;
-		Vector3 R = ((N * N.dot(L) * 2) - L).normalize();
-				
+    Vector3 N = iData->normal;
+		Vector3 L = -ray.direction;
+		Vector3 R = ((N * N.dot(L) * 2.0) - L).normalize();	
 			 
-		if (recDepth < m_recursionDepth) 
-		{
-			
-			
-				Ray reflected = Ray(iData->position,R);
+		if (recDepth < m_recursionDepth) {
+				Ray reflected = Ray(iData->position, R);
 				reflected.min_t = reflected.epsilon_t;
-				color += traceColor(reflected,scene,recDepth+1)*reflectionPercentage;
-			
-                        
+				color += traceColor(reflected, scene, recDepth + 1) * reflectionPercentage;                  
 		}
-
-
-
-    }
-	else {
-		color = scene->getBackground(); // background color
-	}
+  } else {
+	  color = scene->getBackground(); // background color
+  }
 
 
 	// clean
