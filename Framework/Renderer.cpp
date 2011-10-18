@@ -101,7 +101,7 @@ Vector4 Renderer::traceColor(Ray ray, Scene* scene, unsigned int recDepth) {
 		color = m_shader->shade(iData, scene);
 		
 
-    Vector3 N = iData->normal;
+		Vector3 N = iData->normal;
 		Vector3 L = -ray.direction;
 		Vector3 R = ((N * N.dot(L) * 2.0) - L).normalize();	
 			 

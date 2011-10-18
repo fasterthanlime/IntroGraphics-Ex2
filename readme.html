@@ -42,12 +42,12 @@
 <p>
 by Javier Martín de Valmaseda and Amos Wenger
 </p>
-<h2>2.1 Shading</h2> 
+<h2>2.1 Shading</h2>
 
 <h3>2.1.1 Normals and Materials (6 points)</h3>
 
 <p>
-No big deal, assigning material is trivial, and as for normal, plane is trivial, and for triangle I re-used my barycentric coordinates code from homework 1.
+No big deal, assigning material is trivial, and as for normal, plane is trivial, and for triangle we re-used my barycentric coordinates code from homework 1.
 </p>
 
 <h3>2.1.2 Diffuse Lighting Model</h3>
@@ -59,7 +59,7 @@ It was a simple matter of applying the formula. Getting rid of the case when lig
 <h3>2.1.3 Phong Lighting Model</h3>
 
 <p>
-At first I had problems: I was doing scene->getCamera()->getPosition() - iData->sourcePosition for V.. and then I later realized that I should have been doing iData->sourcePosition - iData->position.
+At first we had problems: we was doing scene->getCamera()->getPosition() - iData->sourcePosition for V.. and then we later realized that we should have been doing iData->sourcePosition - iData->position.
 </p>
 
 <p class='center'><img src="images/phong.png"></p>
@@ -72,7 +72,8 @@ Apart from that, nothing too hard. Didn't use the course's formula to compute R,
 
 <h3>2.2.1 Shadows</h3>
 <p>
-Implementing the getNonOccludedLights required to cast rays from the light source's position and the given points - if there is an intersection then it's occluded, otherwise it's non-occluded.
+Implementing the getNonOccludedLights required to cast rays from the light source's position and the given points - if there is an intersection then it's occluded, otherwise it's non-occluded. 
+So it was necessary to change the Scene::fastIntersect method to check this condition.
 </p>
 
 <p class='center'><img src="images/shadows.png"></p>
@@ -88,9 +89,30 @@ Assigning m_reflectionPercentage to iData was enough.
 
 <h3>2.2.3 Reflection</h3>
 <p>
+It's necessary calculate the reflected ray, R, and then calculate the color of the point by the given formula, taking into account the recursion.
+As stated in the statement, it's necessary to fix the min_t of the ray with epsilon_t for avoid the shadow ray blocked by self-intersection
 </p>
 
-<p class='center'><img src="images/reflection.png"></p>
+<p class='center'><img src="images/rec0.bmp"></p>
+<p class='center'>
+m_recursionDepth=0
+</p>
+
+<p class='center'><img src="images/rec1.bmp"></p>
+<p class='center'> 
+m_recursionDepth=1
+</p>
+
+<p class='center'><img src="images/rec3.bmp"></p>
+<p class='center'>
+m_recursionDepth=3
+</p>
+
+<p class='center'><img src="images/rec8.bmp"></p>
+<p class='center'>
+m_recursionDepth=8
+</p>
 
 </body>
 </html>
+
